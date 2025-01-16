@@ -16,6 +16,8 @@ public class PedidoCompletoRequest {
     // MODIFICADO: antes era Date fecha
     private String fecha;
 
+    private String fechaPedido;
+
     // MODIFICADO: antes era double importe
     private String importe;
 
@@ -82,6 +84,14 @@ public class PedidoCompletoRequest {
     // MODIFICADO: setFecha() ahora recibe String
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public String getFechaPedido() {
+        return fechaPedido;
+    }
+
+    public void setFechaPedido(String fechaPedido) {
+        this.fechaPedido = fechaPedido;
     }
 
     // MODIFICADO: getImporte() ahora retorna String
