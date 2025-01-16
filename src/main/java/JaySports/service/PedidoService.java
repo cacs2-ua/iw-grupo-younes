@@ -25,8 +25,12 @@ public class PedidoService {
     @Transactional
     public Pedido crearPedidoDesdeCarrito(Usuario usuario, Carrito carrito) {
         // Verificar si ya existe un pedido pendiente
-        if (pedidoRepository.findPendingByUsuario(usuario).isPresent()) {
-            throw new IllegalStateException("Ya existe un pedido pendiente para este usuario");
+
+        Pedido pedidoExistente = pedidoRepository.findPendingByUsuario(usuario).orElse(null);
+
+        // Si el pedido ya existe, entonces devolver el pedido ya existente
+        if (pedidoExistente != null) {
+            return pedidoExistente;
         }
 
         // Crear nuevo pedido
