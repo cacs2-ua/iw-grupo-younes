@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -91,14 +93,16 @@ public class CarritoController {
             return "error/404";
         }
 
-        Date fechaCompleta = new Date();
+        LocalDateTime fechaCompleta = pedido.getFechaPedido();
 
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy"); // Cambia el formato según tus necesidades
-        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");   // Cambia el formato según tus necesidades
+        Date fechaComoDate = Date.from(fechaCompleta.atZone(ZoneId.systemDefault()).toInstant());
 
-        // Extraer la fecha y hora como cadenas
-        String fecha = formatoFecha.format(fechaCompleta);
-        String hora = formatoHora.format(fechaCompleta);
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+
+        String fecha = formatoFecha.format(fechaComoDate);
+        String hora = formatoHora.format(fechaComoDate);
+
 
         model.addAttribute("ticket", ticket);
         model.addAttribute("precio", precio);

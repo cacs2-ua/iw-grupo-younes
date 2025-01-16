@@ -36,7 +36,10 @@ public class PedidoService {
         }
 
         pedido.setUsuario(usuario);
-        pedido.setFechaPedido(LocalDateTime.now());
+
+        if (pedidoExistente == null)
+            pedido.setFechaPedido(LocalDateTime.now());
+
         pedido.setEstado("PENDIENTE");
         pedido.setTotal(carrito.getPrecioTotal());
         pedido.setNumeroPedido(generarNumeroPedido());
