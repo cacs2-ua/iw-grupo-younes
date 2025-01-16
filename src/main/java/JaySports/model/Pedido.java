@@ -42,6 +42,13 @@ public class Pedido {
     public Pedido() {
     }
 
+    public Pedido(String numeroPedido, LocalDateTime fechaPedido, String estado, Double total) {
+        this.numeroPedido = numeroPedido;
+        this.fechaPedido = fechaPedido;
+        this.estado = estado;
+        this.total = total;
+    }
+
     // Constructor con parámetros
     public Pedido(Long id, String numeroPedido, LocalDateTime fechaPedido, String estado, Double total,
                   String tipoEntrega, String detalles, Usuario usuario, List<ProductoPedido> productosPedido) {

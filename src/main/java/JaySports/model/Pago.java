@@ -47,10 +47,11 @@ public class Pago implements Serializable {
 
     }
 
-    public Pago(String ticketExt, Date fecha, double total) {
+    public Pago(String ticketExt, Date fecha, double total, String estado) {
         this.ticketExt = ticketExt;
         this.fecha = fecha;
         this.total = total;
+        this.estado = estado;
     }
 
     public Long getId() {
