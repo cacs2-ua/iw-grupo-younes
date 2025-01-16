@@ -54,7 +54,7 @@ public class PedidoService {
         pedido = pedidoRepository.save(pedido);
 
         // Vaciar el carrito
-        carritoService.vaciarCarrito(carrito);
+        // carritoService.vaciarCarrito(carrito);
 
         return pedido;
     }
