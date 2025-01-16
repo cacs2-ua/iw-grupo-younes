@@ -33,7 +33,7 @@ public class Pago implements Serializable {
     @NotNull
     private String estado;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
@@ -115,21 +115,19 @@ public class Pago implements Serializable {
     }
 
     public void setPedido(Pedido pedido) {
-        if (this.pedido == pedido) {
-            return; // No hacer nada si ya están vinculados
+
+        if (this.pedido == pedido || pedido == null) {
+            return;
         }
 
         if (this.pedido != null) {
-            Pedido pedidoAnterior = this.pedido;
-            this.pedido = null; // Romper la referencia
-            pedidoAnterior.setPago(null); // Actualizar la relación inversa
+            this.pedido.getPagos().remove(this);
         }
 
         this.pedido = pedido;
 
-        // Vincular la relación inversa si es necesario
-        if (pedido != null && pedido.getPago() != this) {
-            pedido.setPago(this);
+        if (!pedido.getPagos().contains(this)) {
+            pedido.addPago(this);
         }
     }
 

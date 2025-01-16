@@ -2,7 +2,9 @@ package JaySports.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "pedido")
@@ -35,8 +37,8 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ProductoPedido> productosPedido;
 
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Pago pago;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    Set<Pago> pagos = new HashSet<>();
 
     // Constructor vacío
     public Pedido() {
@@ -136,26 +138,14 @@ public class Pedido {
         this.productosPedido = productosPedido;
     }
 
-    public Pago getPago() {
-        return pago;
+    public Set<Pago> getPagos() {
+        return pagos;
     }
 
-    public void setPago(Pago pago) {
-        if (this.pago == pago) {
-            return; // No hacer nada si ya están vinculados
-        }
-
-        // Desvincular el pago
-        if (this.pago != null) {
-            Pago pagoAnterior = this.pago;
-            this.pago = null; // Romper la referencia
-            pagoAnterior.setPedido(null); // Actualizar la relación inversa
-        }
-
-        this.pago = pago;
-
-
-        if (pago != null && pago.getPedido() != this) {
+    public void addPago(Pago pago) {
+        if (pagos.contains(pago)) return;
+        pagos.add(pago);
+        if (pago.getPedido() != this) {
             pago.setPedido(this);
         }
     }
