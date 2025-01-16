@@ -67,6 +67,13 @@ public class PedidoService {
     }
 
     private String generarNumeroPedido() {
-        return "PED-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+        String ticket = "";
+        do {
+            ticket = "PED-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+        } while (pedidoRepository.findByNumeroPedido(ticket).isPresent());
+
+        return ticket;
     }
 }
