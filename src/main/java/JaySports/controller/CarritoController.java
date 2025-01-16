@@ -1,14 +1,8 @@
 package JaySports.controller;
 
-import JaySports.model.Carrito;
-import JaySports.model.Producto;
-import JaySports.model.ProductoCarrito;
-import JaySports.model.Usuario;
-import JaySports.service.CarritoService;
+import JaySports.model.*;
+import JaySports.service.*;
 import JaySports.authentication.ManagerUserSession;
-import JaySports.service.ProductoCarritoService;
-import JaySports.service.ProductoService;
-import JaySports.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/carrito")
@@ -30,6 +27,9 @@ public class CarritoController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private ParametroComercioService parametroComercioService;
 
     @Autowired
     private PedidoService pedidoService;
@@ -64,6 +64,8 @@ public class CarritoController {
                 .mapToDouble(ProductoCarrito::getSubtotal)
                 .sum();
 
+        Pedido pedido = pedidoService.crearPedidoDesdeCarrito(usuario, carrito);
+
         // Pasar datos al modelo
         model.addAttribute("productosCarrito", productosCarrito);
         model.addAttribute("precioTotal", precioTotal);
@@ -71,6 +73,30 @@ public class CarritoController {
         model.addAttribute("usuarioId", managerUserSession.usuarioLogeado());
         model.addAttribute("esAdministrador", managerUserSession.esAdministrador());
         model.addAttribute("nombreUsuario", managerUserSession.obtenerNombreUsuario());
+
+        String ticket = pedido.getNumeroPedido();
+        double precio = pedido.getTotal();
+
+        Optional<String> nombreComercio = parametroComercioService.getValorParametro("nombre");
+        if (nombreComercio.isEmpty()) {
+            model.addAttribute("error", "Error: Nombre del comercio no encontrado.");
+            return "error/404";
+        }
+
+        Date fechaCompleta = new Date();
+
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy"); // Cambia el formato según tus necesidades
+        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");   // Cambia el formato según tus necesidades
+
+        // Extraer la fecha y hora como cadenas
+        String fecha = formatoFecha.format(fechaCompleta);
+        String hora = formatoHora.format(fechaCompleta);
+
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("precio", precio);
+        model.addAttribute("nombreComercio", nombreComercio);
+        model.addAttribute("fecha", fecha);
+        model.addAttribute("hora", hora);
 
         return "carrito";
     }

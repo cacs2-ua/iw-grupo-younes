@@ -56,7 +56,18 @@
             <p>Subtotal: <span th:text="${precioTotal} + ' €'">0 €</span></p>
             <p>Gastos de envío: Gratuito</p>
             <p><strong>Total: <span th:text="${precioTotal} + ' €'">0 €</span></strong></p>
-            <form th:action="@{/carrito/finalizar}" method="POST">
+
+
+
+            <form th:action="@{/tienda/pagoFormProxy}"
+                  method="get">
+
+                <input type="hidden" name="ticket" th:value="${ticket}" />
+                <input type="hidden" name="precio" th:value="${precio}" />
+                <input type="hidden" name="nombreComercio" th:value="${nombreComercio}" />
+                <input type="hidden" name="fecha" th:value="${fecha}" />
+                <input type="hidden" name="hora" th:value="${hora}" />
+
                 <button type="submit" class="btn btn-primary btn-block">Finalizar compra</button>
             </form>
         </div>
