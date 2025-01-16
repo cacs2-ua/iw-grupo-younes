@@ -98,17 +98,6 @@ public class PagoService {
         );
 
          */
-        Pago pagoDB = new Pago(
-                ticketId,
-                fechaDate,
-                importeDouble,
-                estadoPago
-
-        );
-
-        pagoRepository.save(pagoDB);
-
-
 
         Optional<Pedido> pedidoDB = pedidoRepository.findByNumeroPedido(ticketId);
 
@@ -126,6 +115,19 @@ public class PagoService {
         Carrito carrito = carritoService.obtenerCarritoPorUsuario(usuario);
 
         carritoService.vaciarCarrito(carrito);
+
+
+        Pago pagoDB = new Pago(
+                ticketId,
+                fechaDate,
+                importeDouble,
+                estadoPago
+
+        );
+
+        pagoDB.setPedido(pedidoDB.get());
+
+        pagoRepository.save(pagoDB);
 
     }
 }
