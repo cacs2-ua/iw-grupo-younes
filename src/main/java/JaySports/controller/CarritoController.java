@@ -1,6 +1,7 @@
 package JaySports.controller;
 
 import JaySports.model.*;
+import JaySports.repository.CarritoRepository;
 import JaySports.service.*;
 import JaySports.authentication.ManagerUserSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class CarritoController {
     private ManagerUserSession managerUserSession;
 
     private static final Logger logger = LoggerFactory.getLogger(CarritoController.class);
+    @Autowired
+    private CarritoRepository carritoRepository;
 
     /**
      * Mostrar la vista del carrito de compras.
@@ -53,8 +56,11 @@ public class CarritoController {
             return "redirect:/login"; // Redirigir al login si no está logueado
         }
 
+
         // Obtener el carrito del usuario
         Carrito carrito = carritoService.obtenerCarritoPorUsuario(usuario);
+
+        Pedido pedido = pedidoService.crearPedidoDesdeCarrito(usuario, carrito);
 
         // Obtener los productos en el carrito
         List<ProductoCarrito> productosCarrito = productoCarritoService.obtenerProductosPorCarrito(carrito);
@@ -64,7 +70,9 @@ public class CarritoController {
                 .mapToDouble(ProductoCarrito::getSubtotal)
                 .sum();
 
-        Pedido pedido = pedidoService.crearPedidoDesdeCarrito(usuario, carrito);
+        carrito.setPrecioTotal(precioTotal);
+
+        carritoRepository.save(carrito);
 
         // Pasar datos al modelo
         model.addAttribute("productosCarrito", productosCarrito);

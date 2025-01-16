@@ -28,13 +28,13 @@ public class PedidoService {
 
         Pedido pedidoExistente = pedidoRepository.findPendingByUsuario(usuario).orElse(null);
 
+        Pedido pedido = new Pedido();
+
         // Si el pedido ya existe, entonces devolver el pedido ya existente
         if (pedidoExistente != null) {
-            return pedidoExistente;
+            pedido = pedidoExistente;
         }
 
-        // Crear nuevo pedido
-        Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setEstado("PENDIENTE");

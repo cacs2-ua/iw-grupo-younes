@@ -5,10 +5,12 @@ import JaySports.model.ProductoCarrito;
 import JaySports.model.Usuario;
 import JaySports.repository.CarritoRepository;
 import JaySports.repository.ProductoCarritoRepository;
+import JaySports.service.ProductoCarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,9 @@ public class CarritoService {
 
     @Autowired
     private ProductoCarritoRepository productoCarritoRepository;
+
+    @Autowired
+    private ProductoCarritoService productoCarritoService;
 
     /**
      * Obtener el carrito asociado a un usuario.
@@ -43,6 +48,17 @@ public class CarritoService {
         if (carrito.getProductosCarrito() != null) {
             carrito.getProductosCarrito().size();
         }
+
+        List<ProductoCarrito> productosCarrito = productoCarritoService.obtenerProductosPorCarrito(carrito);
+
+        // Calcular el precio total del carrito
+        double precioTotal = productosCarrito.stream()
+                .mapToDouble(ProductoCarrito::getSubtotal)
+                .sum();
+
+        carrito.setPrecioTotal(precioTotal);
+
+        carritoRepository.save(carrito);
 
         return carrito;
     }
