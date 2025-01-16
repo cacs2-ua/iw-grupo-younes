@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Información del pedido</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>Información del pedido</h1>
+<div>
+    <p><strong>Ticket del Pedido:</strong> <span th:text="${ticket}">TICKET-666</span></p>
+    <p><strong>Precio Total a Pagar:</strong> $<span th:text="${precio}">666.666</span></p>
+    <input type="hidden" name="nombreComercio" th:value="${nombreComercio}">
+    <input type="hidden" name="fecha" th:value="${fecha}">
+    <input type="hidden" name="hora" th:value="${hora}">
+</div>
+
+<div>
+    <form th:action="@{/tienda/pagoFormProxy}"
+          method="get">
+
+        <input type="hidden" name="ticket" th:value="${ticket}" />
+        <input type="hidden" name="precio" th:value="${precio}" />
+        <input type="hidden" name="nombreComercio" th:value="${nombreComercio}" />
+        <input type="hidden" name="fecha" th:value="${fecha}" />
+        <input type="hidden" name="hora" th:value="${hora}" />
+
+        <button type="submit">Finalizar compra</button>
+    </form>
+</div>
+</body>
+</html>

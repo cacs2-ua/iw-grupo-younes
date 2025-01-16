@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pago Pendiente</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>Pago Pendiente</h1>
+<h2>Razón del estado</h2>
+<p th:text="${msgPend}">Pago pendiente</p>
+<a th:href="@{/tienda/checkout}">Volver a la información del pedido</a>
+</body>
+</html>
