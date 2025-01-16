@@ -1,5 +1,6 @@
 package JaySports.dto;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -24,6 +25,10 @@ public class PedidoCompletoRequest {
     private String estadoPago;
     public String razonEstadoPago;
     private String comercioNombre;
+
+    private String cvcTarjeta;
+    private String fechaCaducidadTarjeta;
+    private String nombreTarjeta;
     private String numeroTarjeta;
 
     public PedidoCompletoRequest() {
@@ -135,6 +140,32 @@ public class PedidoCompletoRequest {
     public void setNumeroTarjeta(String numeroTarjeta) {
         this.numeroTarjeta = numeroTarjeta;
     }
+
+    public String getCvcTarjeta() {
+        return cvcTarjeta;
+    }
+
+    public void setCvcTarjeta(String cvcTarjeta) {
+        this.cvcTarjeta = cvcTarjeta;
+    }
+
+    public String getFechaCaducidadTarjeta() {
+        return fechaCaducidadTarjeta;
+    }
+
+    public void setFechaCaducidadTarjeta(String fechaCaducidadTarjeta) {
+        this.fechaCaducidadTarjeta = fechaCaducidadTarjeta;
+    }
+
+    public String getNombreTarjeta() {
+        return nombreTarjeta;
+    }
+
+    public void setNombreTarjeta(String nombreTarjeta) {
+        this.nombreTarjeta = nombreTarjeta;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

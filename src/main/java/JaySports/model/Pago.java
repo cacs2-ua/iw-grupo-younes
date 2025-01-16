@@ -30,13 +30,28 @@ public class Pago implements Serializable {
     @NotNull
     private double total;
 
-    @NotNull
-    private String estado;
-
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
+    @NotNull
+    private String estado;
+
+    @NotNull
+    private String razonEstado;
+
+    @NotNull
+    private String cvcTarjeta;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaCaducidadTarjeta;
+
+    @NotNull
+    private String nombreTarjeta;
+
+    @NotNull
+    private String numeroTarjeta;
 
     public Pago() {}
 
@@ -52,6 +67,28 @@ public class Pago implements Serializable {
         this.fecha = fecha;
         this.total = total;
         this.estado = estado;
+    }
+
+    public Pago(String ticketExt,
+                Date fecha,
+                double total,
+                String estado,
+                String razonEstado,
+                String cvcTarjeta,
+                Date fechaCaducidadTarjeta,
+                String nombreTarjeta,
+                String numeroTarjeta) {
+
+        this.ticketExt = ticketExt;
+        this.fecha = fecha;
+        this.total = total;
+        this.estado = estado;
+        this.razonEstado = razonEstado;
+        this.cvcTarjeta = cvcTarjeta;
+        this.fechaCaducidadTarjeta = fechaCaducidadTarjeta;
+        this.nombreTarjeta = nombreTarjeta;
+        this.numeroTarjeta = numeroTarjeta;
+
     }
 
     public Long getId() {
@@ -85,6 +122,47 @@ public class Pago implements Serializable {
     public void setTotal(double total) {
         this.total = total;
     }
+
+    public String getRazonEstado() {
+        return razonEstado;
+    }
+
+    public void setRazonEstado(String razonEstado) {
+        this.razonEstado = razonEstado;
+    }
+
+    public String getCvcTarjeta() {
+        return cvcTarjeta;
+    }
+
+    public void setCvcTarjeta(String cvcTarjeta) {
+        this.cvcTarjeta = cvcTarjeta;
+    }
+
+    public Date getFechaCaducidadTarjeta() {
+        return fechaCaducidadTarjeta;
+    }
+
+    public void setFechaCaducidadTarjeta(Date fechaCaducidadTarjeta) {
+        this.fechaCaducidadTarjeta = fechaCaducidadTarjeta;
+    }
+
+    public String getNombreTarjeta() {
+        return nombreTarjeta;
+    }
+
+    public void setNombreTarjeta(String nombreTarjeta) {
+        this.nombreTarjeta = nombreTarjeta;
+    }
+
+    public String getNumeroTarjeta() {
+        return numeroTarjeta;
+    }
+
+    public void setNumeroTarjeta(String numeroTarjeta) {
+        this.numeroTarjeta = numeroTarjeta;
+    }
+
 
     @Override
     public boolean equals(Object o) {
