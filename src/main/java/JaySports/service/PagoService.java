@@ -41,48 +41,7 @@ public class PagoService {
      */
     public void procesarPedido(PedidoCompletoRequest request) {
 
-        Long pagoId = request.getPagoId();
-        Long pedidoId = request.getPedidoId();
         String ticketId = request.getTicketExt();
-
-        // MODIFICADO: parsear fecha (String -> Date)
-        Date fechaDate = null;
-        try {
-            String fechaStr = request.getFecha();
-            if (fechaStr != null && !fechaStr.isBlank()) {
-                // Ajusta el formato a como se envía desde el servidor (dd/MM/yyyy HH:mm)
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                fechaDate = sdf.parse(fechaStr);
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Error: Formato de fecha no válido en PedidoCompletoRequest.");
-        }
-
-        LocalDateTime fechaPedido = null;
-        try {
-            String fechaStr = request.getFechaPedido(); // Obtenemos el string de la fecha
-            if (fechaStr != null && !fechaStr.isBlank()) {
-                // Ajusta el formato al patrón de la fecha recibida (dd/MM/yyyy HH:mm)
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                fechaPedido = LocalDateTime.parse(fechaStr, formatter); // Parseamos la fecha
-            }
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Error: Formato de fecha no válido en PedidoCompletoRequest.", e);
-        }
-
-        // MODIFICADO: parsear importe (String -> double)
-        double importeDouble;
-        try {
-            String importeStr = request.getImporte();
-            importeDouble = Double.parseDouble(importeStr);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error: Importe no válido en PedidoCompletoRequest.");
-        }
-
-        String estadoPago = request.getEstadoPago();
-        String comercioNombre = request.getComercioNombre();
-        String tarjeta = request.getNumeroTarjeta();
-
         /*
                 // Construimos el PedidoCompletado con los tipos nativos para la BD
         PedidoCompletado pedidoBD = new PedidoCompletado(
@@ -117,11 +76,58 @@ public class PagoService {
         carritoService.vaciarCarrito(carrito);
 
 
+        // CREAR EL PAGO
+
+        Date fechaDate = null;
+        try {
+            String fechaStr = request.getFecha();
+            if (fechaStr != null && !fechaStr.isBlank()) {
+                // Ajusta el formato a como se envía desde el servidor (dd/MM/yyyy HH:mm)
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                fechaDate = sdf.parse(fechaStr);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Error: Formato de fecha no válido en PedidoCompletoRequest.");
+        }
+
+        // MODIFICADO: parsear importe (String -> double)
+        double importeDouble;
+        try {
+            String importeStr = request.getImporte();
+            importeDouble = Double.parseDouble(importeStr);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Error: Importe no válido en PedidoCompletoRequest.");
+        }
+
+        String estadoPago = request.getEstadoPago();
+        String razonEstadoPago = request.getRazonEstadoPago();
+        String cvcTarjeta = request.getCvcTarjeta();
+
+        Date fechaCaducidadTarjeta = null;
+        try {
+            String fechaStr = request.getFechaCaducidadTarjeta();
+            if (fechaStr != null && !fechaStr.isBlank()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+                fechaCaducidadTarjeta = sdf.parse(fechaStr);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Error: Formato de fecha no válido en PedidoCompletoRequest.");
+        }
+
+
+        String nombreTarjeta = request.getNombreTarjeta();
+        String numeroTarjeta = request.getNumeroTarjeta();
+
         Pago pagoDB = new Pago(
                 ticketId,
                 fechaDate,
                 importeDouble,
-                estadoPago
+                estadoPago,
+                razonEstadoPago,
+                cvcTarjeta,
+                fechaCaducidadTarjeta,
+                nombreTarjeta,
+                numeroTarjeta
 
         );
 

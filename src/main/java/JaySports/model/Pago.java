@@ -69,7 +69,8 @@ public class Pago implements Serializable {
         this.estado = estado;
     }
 
-    public Pago(String ticketExt,
+    public Pago(
+                String ticketExt,
                 Date fecha,
                 double total,
                 String estado,
