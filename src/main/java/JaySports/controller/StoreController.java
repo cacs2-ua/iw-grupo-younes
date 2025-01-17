@@ -44,24 +44,6 @@ public class StoreController {
     }
 
 
-    @GetMapping("/checkout")
-    public String mostrarCheckout(Model model) {
-        // Ejemplo con datos "hardcodeados"
-        String ticket = "TICKET-888";
-        double precio = 888.888;
-        String nombreComercio = "Tienda Online v2";
-        String fecha = "09/09/2029";
-        String hora = "13:45";
-
-        model.addAttribute("ticket", ticket);
-        model.addAttribute("precio", precio);
-        model.addAttribute("nombreComercio", nombreComercio);
-        model.addAttribute("fecha", fecha);
-        model.addAttribute("hora", hora);
-
-        return "checkout";
-    }
-
     @GetMapping("/pagoFormProxy")
     public String pagoFormProxy(@RequestParam("ticket") String ticket,
                                 @RequestParam("precio") double precio,
