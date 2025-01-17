@@ -35,14 +35,15 @@ public class PedidoService {
             pedido = pedidoExistente;
         }
 
-        pedido.setUsuario(usuario);
-
-        if (pedidoExistente == null)
+        if (pedidoExistente == null) {
+            pedido.setUsuario(usuario);
             pedido.setFechaPedido(LocalDateTime.now());
+            pedido.setEstado("PENDIENTE");
+            pedido.setNumeroPedido(generarNumeroPedido());
+        }
 
-        pedido.setEstado("PENDIENTE");
         pedido.setTotal(carrito.getPrecioTotal());
-        pedido.setNumeroPedido(generarNumeroPedido());
+
 
         // Crear ProductoPedido para cada ProductoCarrito
         List<ProductoPedido> productosPedido = new ArrayList<>();

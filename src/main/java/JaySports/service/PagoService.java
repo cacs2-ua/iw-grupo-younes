@@ -60,20 +60,22 @@ public class PagoService {
 
         Optional<Pedido> pedidoDB = pedidoRepository.findByNumeroPedido(ticketId);
 
-        if (pedidoDB.isPresent()) {
-            pedidoDB.get().setEstado("COMPLETADO");
-            pedidoRepository.save(pedidoDB.get());
-        }
-
-        else {
+        if (!pedidoDB.isPresent()) {
             throw new IllegalArgumentException("Error: Pedido no encontrado en la Base de Datos.");
         }
 
-        Usuario usuario = pedidoDB.get().getUsuario();
+        String paymentState = request.getEstadoPago();
 
-        Carrito carrito = carritoService.obtenerCarritoPorUsuario(usuario);
+        if (paymentState.startsWith("ACEPT")) {
 
-        carritoService.vaciarCarrito(carrito);
+            pedidoDB.get().setEstado("COMPLETADO");
+            pedidoRepository.save(pedidoDB.get());
+
+            Usuario usuario = pedidoDB.get().getUsuario();
+            Carrito carrito = carritoService.obtenerCarritoPorUsuario(usuario);
+
+            carritoService.vaciarCarrito(carrito);
+        }
 
 
         // CREAR EL PAGO
