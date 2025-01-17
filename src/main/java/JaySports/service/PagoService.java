@@ -107,7 +107,7 @@ public class PagoService {
         try {
             String fechaStr = request.getFechaCaducidadTarjeta();
             if (fechaStr != null && !fechaStr.isBlank()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
                 fechaCaducidadTarjeta = sdf.parse(fechaStr);
             }
         } catch (ParseException e) {
